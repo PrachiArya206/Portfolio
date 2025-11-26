@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prachi Arya | AI Analyst</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Orbitron', 'monospace'],
+                    },
+                    colors: {
+                        neonCyan: '#00f3ff',
+                        neonPurple: '#bc13fe',
+                        deepSpace: '#050505',
+                        midnightBlue: '#0a0a2a',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="antialiased selection:bg-neonCyan selection:text-black">
+
+    <div id="preloader">
+        <div class="text-center">
+            <div class="font-mono text-neonCyan text-xl mb-4 tracking-widest">
+                <span id="loader-text"></span><span class="animate-blink">_</span>
+            </div>
+            <div class="w-64 h-2 bg-gray-800 rounded-full overflow-hidden border border-gray-700">
+                <div id="loader-bar" class="h-full bg-neonCyan w-0"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="module-overlay" class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-black/90 backdrop-blur-md">
+        <div class="glass-panel p-8 max-w-3xl w-full mx-4 border-2 border-neonCyan bg-gray-900 relative overflow-hidden shadow-[0_0_50px_rgba(0,243,255,0.3)]">
+            <button id="close-overlay" class="absolute top-4 right-4 text-white hover:text-neonCyan text-3xl transition-colors z-50">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="scan-line"></div>
+            
+            <div class="border-b border-gray-700 pb-4 mb-6">
+                <h3 class="text-lg font-mono text-neonCyan mb-1">MODULE_IDENTITY:</h3>
+                <h2 id="overlay-name" class="text-4xl md:text-5xl font-mono font-bold text-white tracking-wide uppercase"></h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="col-span-1 flex flex-col gap-4">
+                    <div class="border border-gray-600 bg-black p-2">
+                        <canvas id="mini-visual" width="100" height="100" class="w-full h-32 object-cover"></canvas>
+                    </div>
+                    <div class="bg-gray-800 p-3 rounded border-l-4 border-neonPurple">
+                        <div class="text-xs text-gray-400 font-mono">ENCRYPTION</div>
+                        <div class="text-white font-bold font-mono">AES-256</div>
+                    </div>
+                    <div class="bg-gray-800 p-3 rounded border-l-4 border-neonCyan">
+                        <div class="text-xs text-gray-400 font-mono">STATUS</div>
+                        <div class="text-neonCyan font-bold font-mono animate-pulse">DEPLOYED</div>
+                    </div>
+                </div>
+
+                <div class="col-span-2 space-y-6">
+                    <div>
+                        <h4 class="text-neonPurple font-mono font-bold text-lg mb-2"><i class="fas fa-microchip mr-2"></i>TECHNOLOGIES USED:</h4>
+                        <div id="overlay-tech" class="flex flex-wrap gap-2"></div>
+                    </div>
+                    <div>
+                        <h4 class="text-neonCyan font-mono font-bold text-lg mb-2"><i class="fas fa-terminal mr-2"></i>FUNCTION DETAILS:</h4>
+                        <p id="overlay-desc" class="font-sans text-white text-lg leading-relaxed font-medium"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 pt-4 border-t border-gray-700 flex justify-between items-center font-mono text-xs">
+                <span class="text-neonCyan">>> ANALYSIS COMPLETE</span>
+                <span class="text-gray-400">SYSTEM ID: 8X-299</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="cursor-ring"></div>
+    <canvas id="neuralNetwork"></canvas>
+
+    <nav class="fixed w-full z-40 glass-panel border-b-0 rounded-none top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <span class="hover-text font-mono text-xl text-neonCyan font-bold tracking-widest">&lt;PRACHI_ARYA /&gt;</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#skills" class="hover-text text-gray-300 px-3 py-2 text-sm font-medium">Stats</a>
+                        <a href="#projects" class="hover-text text-gray-300 px-3 py-2 text-sm font-medium">Modules</a>
+                        <a href="#collaborations" class="hover-text text-gray-300 px-3 py-2 text-sm font-medium">Collabs</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="h-screen flex items-center justify-center relative px-4">
+        <div class="text-center max-w-5xl mx-auto z-10 flex flex-col items-center justify-center h-full">
+            <div class="h-8 mb-2">
+                <span id="hero-line-1" class="text-neonPurple font-mono text-xl tracking-widest"></span>
+            </div>
+            <h1 class="text-5xl md:text-8xl font-bold font-mono mb-4 text-white tracking-tighter h-20 md:h-24">
+                <span id="hero-line-2" class="hover-text"></span>
+            </h1>
+            <div class="h-12 mt-2">
+                <span id="hero-line-3" class="text-2xl md:text-3xl text-neonCyan font-mono tracking-widest bg-black/30 px-4 py-1 border-l-2 border-neonCyan"></span><span class="animate-blink text-neonCyan text-3xl">|</span>
+            </div>
+            <div class="mt-16">
+                <p class="text-gray-400 text-sm font-mono tracking-widest mb-4 opacity-70">SCROLL TO INITIALIZE</p>
+                <i class="fas fa-chevron-down text-neonCyan animate-bounce"></i>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="py-20 px-4 relative z-10">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="hover-text text-3xl font-mono font-bold text-center mb-16 text-white tracking-wider">
+                SYSTEM_CAPABILITIES
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass-panel p-6 rounded-lg skill-card group cursor-none scroll-hidden" data-target="98">
+                    <div class="flex justify-between mb-4 font-mono text-sm text-gray-300 group-hover:text-neonCyan transition-colors">
+                        <span>Python (Pandas/NumPy)</span><span class="skill-percent">98%</span>
+                    </div>
+                    <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden border border-gray-700">
+                        <div class="bg-neonCyan h-full rounded-full skill-progress transition-all duration-1000" style="width: 40%"></div>
+                    </div>
+                </div>
+                <div class="glass-panel p-6 rounded-lg skill-card group cursor-none scroll-hidden" data-target="90">
+                    <div class="flex justify-between mb-4 font-mono text-sm text-gray-300 group-hover:text-neonCyan transition-colors">
+                        <span>Machine Learning</span><span class="skill-percent">90%</span>
+                    </div>
+                    <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden border border-gray-700">
+                        <div class="bg-neonPurple h-full rounded-full skill-progress transition-all duration-1000" style="width: 40%"></div>
+                    </div>
+                </div>
+                <div class="glass-panel p-6 rounded-lg skill-card group cursor-none scroll-hidden" data-target="95">
+                    <div class="flex justify-between mb-4 font-mono text-sm text-gray-300 group-hover:text-neonCyan transition-colors">
+                        <span>Deep Learning</span><span class="skill-percent">95%</span>
+                    </div>
+                    <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden border border-gray-700">
+                        <div class="bg-neonCyan h-full rounded-full skill-progress transition-all duration-1000" style="width: 40%"></div>
+                    </div>
+                </div>
+                <div class="glass-panel p-6 rounded-lg skill-card group cursor-none scroll-hidden" data-target="88">
+                    <div class="flex justify-between mb-4 font-mono text-sm text-gray-300 group-hover:text-neonCyan transition-colors">
+                        <span>NLP & LLMs</span><span class="skill-percent">88%</span>
+                    </div>
+                    <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden border border-gray-700">
+                        <div class="bg-neonPurple h-full rounded-full skill-progress transition-all duration-1000" style="width: 40%"></div>
+                    </div>
+                </div>
+                <div class="glass-panel p-6 rounded-lg skill-card group cursor-none scroll-hidden" data-target="92">
+                    <div class="flex justify-between mb-4 font-mono text-sm text-gray-300 group-hover:text-neonCyan transition-colors">
+                        <span>GenAI & GANs</span><span class="skill-percent">92%</span>
+                    </div>
+                    <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden border border-gray-700">
+                        <div class="bg-neonCyan h-full rounded-full skill-progress transition-all duration-1000" style="width: 40%"></div>
+                    </div>
+                </div>
+                <div class="glass-panel p-6 rounded-lg skill-card group cursor-none scroll-hidden" data-target="85">
+                    <div class="flex justify-between mb-4 font-mono text-sm text-gray-300 group-hover:text-neonCyan transition-colors">
+                        <span>MLOps / CI/CD</span><span class="skill-percent">85%</span>
+                    </div>
+                    <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden border border-gray-700">
+                        <div class="bg-neonPurple h-full rounded-full skill-progress transition-all duration-1000" style="width: 40%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-20 px-4 relative z-10">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="hover-text text-3xl font-mono font-bold mb-12 text-white flex items-center">
+                <span class="text-neonPurple mr-2">>></span> DEPLOYED_MODULES
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="project-card glass-panel rounded-lg overflow-hidden relative cursor-pointer group min-h-[400px] flex flex-col justify-between scroll-hidden transform transition-all duration-500"
+                     data-title="PROJECT SENTINEL"
+                     data-tech="PYTHON, SCIKIT-LEARN, PANDAS"
+                     data-desc="Initiating Random Forest algorithm... Analyzing 5TB of historical market data. Objective: Predict market fluctuations with 85% accuracy. Status: Deployment Successful. Risk reduced by 12%.">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-neonCyan"></div>
+                    <div class="p-6 h-full flex flex-col">
+                        <div class="flex justify-between items-start mb-6">
+                            <span class="text-xs font-mono border border-neonCyan text-neonCyan px-2 py-1 rounded">FINANCE</span>
+                            <i class="fas fa-lock text-gray-600 group-hover:text-neonCyan"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4 mt-2 font-mono transition-transform duration-300">Project Sentinel</h3>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs font-bold bg-gray-800 text-gray-300 px-2 py-1 rounded">PYTHON</span>
+                            <span class="text-xs font-bold bg-gray-800 text-gray-300 px-2 py-1 rounded">SK-LEARN</span>
+                        </div>
+                        <p class="text-gray-300 text-base mb-6 flex-grow font-bold font-sans transition-transform duration-300">Predictive market modeling engine utilizing advanced random forest algorithms.</p>
+                        <div class="mt-4 text-center"><span class="text-xs font-mono text-neonCyan group-hover:underline">CLICK FOR ANALYSIS >></span></div>
+                    </div>
+                </div>
+
+                <div class="project-card glass-panel rounded-lg overflow-hidden relative cursor-pointer group min-h-[400px] flex flex-col justify-between scroll-hidden transform transition-all duration-500"
+                     data-title="THE VOX INTERFACE"
+                     data-tech="NLP, BERT, TENSORFLOW"
+                     data-desc="Processing unstructured audio data... Natural Language Processing nodes active. Sentiment analysis categorized 50,000+ user feedbacks in real-time. Result: Customer support triage efficiency increased by 200%.">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-neonPurple"></div>
+                    <div class="p-6 h-full flex flex-col">
+                        <div class="flex justify-between items-start mb-6">
+                            <span class="text-xs font-mono border border-neonPurple text-neonPurple px-2 py-1 rounded">NLP / AI</span>
+                            <i class="fas fa-wave-square text-gray-600 group-hover:text-neonPurple"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4 mt-2 font-mono transition-transform duration-300">The VOX Interface</h3>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs font-bold bg-gray-800 text-gray-300 px-2 py-1 rounded">NLP</span>
+                            <span class="text-xs font-bold bg-gray-800 text-gray-300 px-2 py-1 rounded">BERT</span>
+                        </div>
+                        <p class="text-gray-300 text-base mb-6 flex-grow font-bold font-sans transition-transform duration-300">Real-time sentiment analysis bot capable of parsing unstructured human voice data.</p>
+                        <div class="mt-4 text-center"><span class="text-xs font-mono text-neonPurple group-hover:underline">CLICK FOR ANALYSIS >></span></div>
+                    </div>
+                </div>
+
+                <div class="project-card glass-panel rounded-lg overflow-hidden relative cursor-pointer group min-h-[400px] flex flex-col justify-between scroll-hidden transform transition-all duration-500"
+                     data-title="VISION GRID"
+                     data-tech="YOLOv8, OPENCV, PYTORCH"
+                     data-desc="Calibrating optical sensors... Object detection algorithm loaded. Scanning manufacturing streams for defects at 60 frames per second. Accuracy rating: 99.2%. Automated quality control achieved.">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-white"></div>
+                    <div class="p-6 h-full flex flex-col">
+                        <div class="flex justify-between items-start mb-6">
+                            <span class="text-xs font-mono border border-white text-white px-2 py-1 rounded">VISION</span>
+                            <i class="fas fa-eye text-gray-600 group-hover:text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4 mt-2 font-mono transition-transform duration-300">Vision Grid</h3>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs font-bold bg-gray-800 text-gray-300 px-2 py-1 rounded">YOLOv8</span>
+                            <span class="text-xs font-bold bg-gray-800 text-gray-300 px-2 py-1 rounded">OPENCV</span>
+                        </div>
+                        <p class="text-gray-300 text-base mb-6 flex-grow font-bold font-sans transition-transform duration-300">Automated optical inspection system for high-speed manufacturing lines.</p>
+                        <div class="mt-4 text-center"><span class="text-xs font-mono text-white group-hover:underline">CLICK FOR ANALYSIS >></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="data-stream" class="cyber-grid relative h-64 md:h-80 w-full my-12 flex items-center justify-center overflow-hidden border-y border-gray-800 scroll-hidden">
+        <div class="absolute inset-0 bg-black/60 z-0 transition-all duration-700" id="stream-bg"></div>
+        <div class="relative z-10 text-center flex flex-col items-center">
+            
+            <h3 id="stream-text" class="hacker-text text-4xl md:text-6xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-r from-neonCyan to-neonPurple tracking-widest cursor-default mb-4">
+                MAERTS_ATAD 
+            </h3>
+            
+            <p class="hacker-text text-gray-400 font-mono text-sm tracking-[0.5em] cursor-default mb-6">
+               CONNECTING NODES...
+            </p>
+
+            <div class="loading-stream-box w-48 h-4 border border-gray-700 rounded relative overflow-hidden bg-black/50">
+                <div class="loading-bar absolute top-0 left-0 h-full bg-neonCyan/50 w-full"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="collaborations" class="py-20 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="hover-text text-3xl font-mono font-bold mb-12 text-center text-white">
+                NETWORK_NODES (COLLABORATIONS)
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="collab-card glass-panel p-8 text-center rounded hover:bg-neonCyan/10 transition-all duration-500 min-h-[350px] flex flex-col justify-center group scroll-hidden">
+                    <div class="mb-6"><i class="collab-icon fas fa-robot text-6xl text-gray-600 group-hover:text-neonCyan transition-all duration-700"></i></div>
+                    <h4 class="font-mono font-bold text-white text-2xl mb-3">CyberDyne</h4>
+                    <p class="text-xs text-neonCyan mb-6 font-bold tracking-wider">AI SAFETY RESEARCH</p>
+                    <p class="text-gray-300 text-sm leading-relaxed font-bold font-sans">Partnered on ethical constraints for autonomous prediction models.</p>
+                </div>
+                <div class="collab-card glass-panel p-8 text-center rounded hover:bg-neonPurple/10 transition-all duration-500 min-h-[350px] flex flex-col justify-center group scroll-hidden">
+                    <div class="mb-6"><i class="collab-icon fas fa-network-wired text-6xl text-gray-600 group-hover:text-neonPurple transition-all duration-700"></i></div>
+                    <h4 class="font-mono font-bold text-white text-2xl mb-3">Nexus Data</h4>
+                    <p class="text-xs text-neonPurple mb-6 font-bold tracking-wider">BIG DATA PIPELINES</p>
+                    <p class="text-gray-300 text-sm leading-relaxed font-bold font-sans">Architected scalable ETL streams for 10TB+ daily datasets.</p>
+                </div>
+                <div class="collab-card glass-panel p-8 text-center rounded hover:bg-neonCyan/10 transition-all duration-500 min-h-[350px] flex flex-col justify-center group scroll-hidden">
+                    <div class="mb-6"><i class="collab-icon fas fa-brain text-6xl text-gray-600 group-hover:text-neonCyan transition-all duration-700"></i></div>
+                    <h4 class="font-mono font-bold text-white text-2xl mb-3">NeuralLink</h4>
+                    <p class="text-xs text-neonCyan mb-6 font-bold tracking-wider">BCI ANALYTICS</p>
+                    <p class="text-gray-300 text-sm leading-relaxed font-bold font-sans">Consulted on signal processing algorithms for brain-computer interfaces.</p>
+                </div>
+                <div class="collab-card glass-panel p-8 text-center rounded hover:bg-neonPurple/10 transition-all duration-500 min-h-[350px] flex flex-col justify-center group scroll-hidden">
+                    <div class="mb-6"><i class="collab-icon fas fa-globe text-6xl text-gray-600 group-hover:text-neonPurple transition-all duration-700"></i></div>
+                    <h4 class="font-mono font-bold text-white text-2xl mb-3">GlobalMind</h4>
+                    <p class="text-xs text-neonPurple mb-6 font-bold tracking-wider">PREDICTIVE ECON</p>
+                    <p class="text-gray-300 text-sm leading-relaxed font-bold font-sans">Developed socio-economic forecasting models for emerging markets.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="py-16 bg-black border-t border-gray-800 scroll-hidden">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-mono font-bold text-white mb-8">ESTABLISH_CONNECTION</h2>
+            <div class="flex justify-center space-x-12 mb-12">
+                <a href="#" class="social-icon text-gray-500 hover:text-neonCyan text-3xl"><i class="fab fa-linkedin"></i></a>
+                <a href="#" class="social-icon text-gray-500 hover:text-neonPurple text-3xl"><i class="fab fa-github"></i></a>
+                <a href="#" class="social-icon text-gray-500 hover:text-neonCyan text-3xl"><i class="fas fa-envelope"></i></a>
+                <a href="#" class="social-icon text-gray-500 hover:text-neonPurple text-3xl"><i class="fab fa-twitter"></i></a>
+            </div>
+            <p class="text-gray-700 text-xs font-mono">© 2025 Prachi Arya | System Status: Online 🟢</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
